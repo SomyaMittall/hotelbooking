@@ -1,9 +1,16 @@
 import User from "../models/User.js";
 import { Webhook } from "svix";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const clerkWebhooks= async(req,res)=>{
     try {
+        console.log("Snwerw")
         const whook= new Webhook(process.env.CLERK_WEBHOOK_SECRET)
+        console.log("CLERK_WEBHOOK_SECRET:", process.env.CLERK_WEBHOOK_SECRET);
+        console.log("Webhook instance type:", typeof whook);
+        console.log("Webhook instance:", whook);
         const headers={
             "svix-id": req.headers["svix-id"],
             "svix-timestamp": req.headers["svix-timestamp"],
@@ -14,15 +21,15 @@ const clerkWebhooks= async(req,res)=>{
         const {data, type}= req.body
         const userData={
             _id:data.id,
-            email: data.email_address[0].email_address,
+            email: data.email_addresses[0].email_address,
             username: data.first_name + " " + data.last_name,
             image: data.image_url,
         }
 
-switch(type){
-    case "user.created":{
-       await User.create(userData);
-       break;
+        switch(type){
+            case "user.created":{
+                await User.create(userData);
+                break;
     }
     case "user.updated":{
         await User.findByIdAndUpdate(data.id, userData);
@@ -34,13 +41,13 @@ switch(type){
     }
     default:
         break;
-}
-res.json({success:true, message: "Webhook Recieved"})
-
-    } catch (error) {
+    }
+    res.json({success:true, message: "Webhook Recieved"})
+    
+} catch (error) {
+        console.log("Snwerw")
         console.log(error.message);
         res.json({success: false, message : error.message});
-        
-    }
+}
 }
 export default clerkWebhooks;
