@@ -1,12 +1,14 @@
 import User from "../models/User.js";
 import { Webhook } from "svix";
-import dotenv from "dotenv";
+// import dotenv from "dotenv";
 
-dotenv.config();
+// dotenv.config();
 
 const clerkWebhooks= async(req,res)=>{
+    console.log("✅ Clerk webhook hit");
     try {
-        console.log("Snwerw")
+        // console.log("Snwerw")
+        // console.log("Headers: ")
         const whook= new Webhook(process.env.CLERK_WEBHOOK_SECRET)
         console.log("CLERK_WEBHOOK_SECRET:", process.env.CLERK_WEBHOOK_SECRET);
         console.log("Webhook instance type:", typeof whook);
@@ -45,7 +47,7 @@ const clerkWebhooks= async(req,res)=>{
     res.json({success:true, message: "Webhook Recieved"})
     
 } catch (error) {
-        console.log("Snwerw")
+        // console.log("Snwerw")
         console.log(error.message);
         res.json({success: false, message : error.message});
 }
