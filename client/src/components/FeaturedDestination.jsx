@@ -1,12 +1,14 @@
 import React from 'react'
-import { roomsDummyData } from '../assets/assets'
+// import { roomsDummyData } from '../assets/assets'
 import HotelCard from './HotelCard'
 import Title from './Title'
 import { useNavigate } from 'react-router-dom'
+import { useAppContext } from '../context/AppContext'
 
 const FeaturedDestination = () => {
-    const navigate = useNavigate();
-    return (
+    const {rooms, useNavigate} = useAppContext();
+    // const navigate = useNavigate();
+    return rooms.length > 0 && (
         <div className='flex flex-col items-center px-6 md:px-16 lg:px-24 bg-gradient-to-br from-blue-50 via-white to-pink-50 py-20'>
 
             <Title 
@@ -29,7 +31,7 @@ const FeaturedDestination = () => {
                     navigate("/rooms/${id}"); 
                     scrollTo(0, 0); 
                 }}
-                className='my-16 px-6 py-3 mt-8.5 text-sm font-semibold rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white
+                className='my-16 px-6 py-3 mt-8 text-sm font-semibold rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white
                 hover:from-blue-600 hover:to-indigo-600 transition-all duration-300 shadow-md hover:shadow-lg'
             >
                 View All Destinations

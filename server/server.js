@@ -17,11 +17,16 @@ const app =express()
 app.use(cors())
 
 // middleware
-app.post("/api/clerk", express.raw({ type: "application/json" }), clerkWebhooks);
+// app.pos("/api/clerk", express.raw({ type: "application/json" }), clerkWebhooks);
 
 app.use(express.json());
 app.use(clerkMiddleware());
 
+
+
+// api to listen clerkWebhooks
+// app.use("/api/clerk", clerkWebhooks)
+app.use("/api/clerk", express.raw({ type: "application/json" }), clerkWebhooks);
 
 app.get("/", (req, res)=>res.send("api is working"))
 app.use("/api/user", userRouter)

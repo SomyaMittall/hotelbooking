@@ -5,8 +5,8 @@ import toast from 'react-hot-toast'
 
 const HotelReg = () => {
 
-    const {setShowHotelReg, axios, getToken, setIsOwner, appUser} = useAppContext();
-    console.log(appUser?._id);
+    const {setShowHotelReg, axios, getToken, setIsOwner} = useAppContext();
+    // console.log(appUser?._id);
 
     const [name, setName] = useState("");
     const [contact, setContact] = useState("");

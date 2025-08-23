@@ -1,9 +1,37 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Title from '../../components/Title'
-import { assets, dashboardDummyData } from '../../assets/assets'
+// import { assets, dashboardDummyData } from '../../assets/assets'
+import { assets } from '../../assets/assets'
+import { useAppContext } from '../../context/AppContext'
 
 const Dashboard = () => {
-  const [dashboardData] = useState(dashboardDummyData);
+
+  const { currency, user, getToken, toast, axios } = useAppContext();
+  // const [dashboardData] = useState(dashboardDummyData);
+  const [dashboardData, setDashboardData] = useState({
+    bookings: [],
+    totalBookings: 0,
+    totalRevenue: 0,
+  });
+
+  const fetchDashboardData = async()=>{
+    try {
+      const {data}= await axios.get("/api/bookings/hotel", {headers: {Authorization: `Bearer ${await getToken()}`}}) 
+      if(data.success){
+        setDashboardData(data.dashboardData)
+      } else{
+        toast.error(data.message)
+      }
+    } catch (error) {
+      toast.error(error.message)
+    }
+  }
+
+  useEffect(()=>{
+    if(user){
+      fetchDashboardData();
+    }
+  }, [user])
 
   return (
     <div>
@@ -34,7 +62,7 @@ const Dashboard = () => {
           </div>
           <div className="flex flex-col ml-4 font-medium">
             <p className="text-sm text-pink-600">Total Revenue</p>
-            <p className="text-2xl font-bold">$ {dashboardData.totalRevenue}</p>
+            <p className="text-2xl font-bold">{currency} {dashboardData.totalRevenue}</p>
           </div>
         </div>
       </div>
@@ -62,14 +90,13 @@ const Dashboard = () => {
               >
                 <td className="py-3 px-4 text-gray-800">{item.user.username}</td>
                 <td className="py-3 px-4 text-gray-800 max-sm:hidden">{item.room.roomType}</td>
-                <td className="py-3 px-4 text-gray-800 text-center">$ {item.totalPrice}</td>
+                <td className="py-3 px-4 text-gray-800 text-center">{currency} {item.totalPrice}</td>
                 <td className="py-3 px-4 text-center">
                   <span
-                    className={`py-1 px-4 text-xs font-bold rounded-full shadow-sm ${
-                      item.isPaid
+                    className={`py-1 px-4 text-xs font-bold rounded-full shadow-sm ${item.isPaid
                         ? "bg-green-100 text-green-700 border border-green-300"
                         : "bg-yellow-100 text-yellow-800 border border-yellow-300"
-                    }`}
+                      }`}
                   >
                     {item.isPaid ? "✔ Completed" : "⏳ Pending"}
                   </span>
