@@ -20,7 +20,7 @@ const FeaturedDestination = () => {
             />
 
             <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-20'>
-                {roomsDummyData.slice(0, 4).map((room, index) => (
+                {rooms.slice(0, 4).map((room, index) => (
                     <HotelCard key={room._id} room={room} index={index} />
                 ))}
             </div>

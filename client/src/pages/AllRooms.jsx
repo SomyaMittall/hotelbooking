@@ -3,6 +3,7 @@ import { assets, facilityIcons, roomsDummyData } from '../assets/assets';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import StarRating from '../components/StarRating';
 import { useAppContext } from '../context/AppContext';
+import { useMemo } from 'react';
 
 const CheckBox = ({ label, selected = false, onChange = () => { } }) => (
   <label className="flex gap-3 items-center cursor-pointer mt-2 text-sm hover:text-pink-500 transition-colors">
@@ -15,6 +16,7 @@ const CheckBox = ({ label, selected = false, onChange = () => { } }) => (
     <span className="font-light select-none">{label}</span>
   </label>
 );
+
 
 const RadioButton = ({ label, selected = false, onChange = () => { } }) => (
   <label className="flex gap-3 items-center cursor-pointer mt-2 text-sm hover:text-pink-500 transition-colors">

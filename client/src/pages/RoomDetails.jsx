@@ -71,7 +71,7 @@ const RoomDetails = () => {
   // }, []);
 
   useEffect(() => {
-    const room = roomss.find((room) => room._id === id);
+    const room = rooms.find((room) => room._id === id);
     room && setRoom(room)
     room && setMainImage(room.images[0]);
   }, [rooms]);
