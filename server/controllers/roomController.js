@@ -28,7 +28,7 @@ export const createRoom = async (req, res) => {
         res.json({ success: true, message: "Room Created Successfully" })
 
     } catch (error) {
-        res.json({ success: false, message: "error.message" })
+        res.json({ success: false, message: error.message })
     }
 }
 
@@ -53,7 +53,7 @@ export const getRooms = async (req, res) => {
 export const getOwnerRooms = async (req, res) => {
     try {
         const hotelData = await Hotel.findOne({ owner: req.auth.userId })
-        const rooms = awaitRoom.find({ hotel: hotelData._id.toString() }).populate("hotel");
+        const rooms = await Room.find({ hotel: hotelData._id.toString() }).populate("hotel");
         res.json({ success: true, rooms })
     } catch (error) {
         res.json({ success: false, message: error.message })

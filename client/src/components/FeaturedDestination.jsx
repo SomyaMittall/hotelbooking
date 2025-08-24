@@ -1,5 +1,4 @@
 import React from 'react'
-// import { roomsDummyData } from '../assets/assets'
 import HotelCard from './HotelCard'
 import Title from './Title'
 import { useNavigate } from 'react-router-dom'
@@ -7,7 +6,7 @@ import { useAppContext } from '../context/AppContext'
 
 const FeaturedDestination = () => {
     const {rooms, useNavigate} = useAppContext();
-    // const navigate = useNavigate();
+    
     return rooms.length > 0 && (
         <div className='flex flex-col items-center px-6 md:px-16 lg:px-24 bg-gradient-to-br from-blue-50 via-white to-pink-50 py-20'>
 

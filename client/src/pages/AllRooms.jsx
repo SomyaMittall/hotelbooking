@@ -33,7 +33,6 @@ const AllRooms = () => {
 
   const [searchParams, setSearchParams] = useSearchParams();
   const { rooms, navigate, currency } = useAppContext();
-  // const navigate = useNavigate();
   const [openFilters, setOpenFilters] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState({
     roomType: [],
@@ -106,7 +105,7 @@ const AllRooms = () => {
         roomType: [],
         priceRange: []  
       });
-      setSelectedFilters('');
+      setSelectedSort('');
       setSearchParams({});
     }
 

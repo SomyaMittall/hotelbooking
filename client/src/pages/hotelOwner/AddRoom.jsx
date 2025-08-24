@@ -36,7 +36,7 @@ const AddRoom = () => {
         try {
             const formData = new FormData()
             formData.append('roomType', inputs.roomType)
-            formData.append('pricePerNight', inputs.pricePerNightType)
+            formData.append('pricePerNight', inputs.pricePerNight)
 
             // Converting Amenities to Array & keeping only enabled Amenities
             const amenities = Object.keys(inputs.amenities).filter(key => inputs.amenities[key])
@@ -49,13 +49,13 @@ const AddRoom = () => {
 
             const { data } = await axios.post('/api/rooms/', formData, {
                 headers: {
-                    Authorization: ` Bearer ${await getToken()}`
+                    Authorization: `Bearer ${await getToken()}`
                 }
             })
             if (data.success) {
                 toast.success(data.message);
                 setInputs({
-                    roomType: " ",
+                    roomType: "",
                     pricePerNight: 0,
                     amenities: {
                         "Free WiFi": false,
