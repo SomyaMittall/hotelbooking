@@ -23,7 +23,7 @@ export const checkAvailabilityAPI = async (req, res) => {
     try {
         const { room, checkInDate, checkOutDate } = req.body;
         const isAvailable = await checkAvailability({ checkInDate, checkOutDate, room })
-        res.json()
+        res.json({ success: true, isAvailable })
     } catch (error) {
         res.json({ success: false, message: error.message })
     }
