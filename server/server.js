@@ -8,17 +8,19 @@ import userRouter from "./routes/userRoutes.js";
 import hotelRouter from "./routes/hotelRoutes.js";
 import connectCloudinary from "./configs/cloudinary.js";
 import roomRouter from "./routes/roomRoutes.js";
-import bookingRouter from "./routes/bookingRouter.js";
+import bookingRouter from "./routes/bookingRoutes.js";
+import { stripeWebhooks } from "./controllers/stripeWebhooks.js";
 
 connectDB();
 connectCloudinary();
 
 const app =express()
-app.use(cors())
+app.use(cors()) // enable cross origin resource sharing 
+
+// api to listen to stripe webhooks 
+app.post('/api/stripe', express.raw({type:"application/json"}), stripeWebhooks)
 
 // middleware
-// app.pos("/api/clerk", express.raw({ type: "application/json" }), clerkWebhooks);
-
 app.use(express.json());
 app.use(clerkMiddleware());
 

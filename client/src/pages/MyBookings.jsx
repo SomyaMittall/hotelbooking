@@ -1,34 +1,46 @@
 import React, { useState, useEffect } from 'react'
 import Title from '../components/Title'
-// import { assets, userBookingsDummyData } from '../assets/assets'
-import { assets} from '../assets/assets'
+import { assets } from '../assets/assets'
 import { useAppContext } from '../context/AppContext'
 import toast from 'react-hot-toast'
 
 const MyBookings = () => {
 
-    const {axios, getToken, user}= useAppContext();
+    const { axios, getToken, user } = useAppContext();
 
-    // const [bookings, setBookings] = useState(userBookingsDummyData);
     const [bookings, setBookings] = useState([]);
 
     const fetchUserBookings = async () => {
-try {
-    const {data}=await axios.get("/api/bookings/user", {headers:{Authorization: `Bearer ${await getToken()}`}})
-    if(data.success){
-        setBookings(data.bookings);
-    }else{
-        toast.error(data.message);
+        try {
+            const { data } = await axios.get("/api/bookings/user", { headers: { Authorization: `Bearer ${await getToken()}` } })
+            if (data.success) {
+                setBookings(data.bookings);
+            } else {
+                toast.error(data.message);
+            }
+        } catch (error) {
+            toast.error(error.message); 
+        }
     }
-} catch (error) {
-    toast.error(error.message);
-}
+
+const handlePayment= async(bookingId)=>{
+    try {
+        const {data}=await axios.post("/api/bookings/stripe-payment", {bookingId}, {headers: { Authorization: `Bearer ${await getToken()}` }})
+        if(data.success){
+            window.location.href=data.url
+        }else{
+            toast.error(data.message)
+        }
+    } catch (error) {
+        toast.error(error.message)
     }
-    useEffect(()=>{
-if(user){
-    fetchUserBookings();
 }
-    },[user])
+
+    useEffect(() => {
+        if (user) {
+            fetchUserBookings();
+        }
+    }, [user])
 
     return (
         <div className='py-28 md:pb-35 md:pt-32 px-4 md:px-16 lg:px-24 xl:px-32 bg-gradient-to-b from-gray-50 to-white'>
@@ -104,7 +116,7 @@ if(user){
                             </div>
 
                             {!booking.isPaid && (
-                                <button className='px-4 py-1.5 text-xs rounded-full bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-md hover:shadow-lg hover:scale-[1.05] transition-all duration-300'>
+                                <button onClick={()=>handlePayment(booking._id )} className='px-4 py-1.5 text-xs rounded-full bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-md hover:shadow-lg hover:scale-[1.05] transition-all duration-300'>
                                     Pay Now
                                 </button>
                             )}
