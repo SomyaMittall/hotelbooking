@@ -2,6 +2,8 @@ import transporter from "../configs/nodemailer.js";
 import Booking from "../models/Booking.js"
 import Hotel from "../models/Hotel.js";
 import Room from "../models/Room.js";
+import Crypto from "crypto";
+import Razorpay from "razorpay"
 
 const checkAvailability = async ({ checkInDate, checkOutDate, room }) => {
     try {
@@ -89,14 +91,15 @@ export const createBooking = async (req, res) => {
 
         await transporter.sendMail(mailOptions)
 
-        res.json({ success: true, message: "Booking created successfully" })
+        res.json({ success: true, message: "Booking created successfully", booking })
     } catch (error) {
+        console.log(error)
         res.json({ success: false, message: "failed to create booking" })
     }
 };
 
 // api to get all bookings for a user
-// get/api/booking/user
+// get/api/bookings/user
 export const getUserBookings = async (req, res) => {
     try {
         const user = req.user._id;
@@ -125,5 +128,18 @@ export const getHotelBookings = async (req, res) => {
     }
     catch (error) {
         res.json({ success: false, message: "Failed to fetch bookings" })
+    }
+}
+
+export const stripePayment= async(req,res)=>{
+    try {
+        const {bookingId}= req.body
+
+        const booking= await Booking.findById(bookingId)    
+        const roomData= await Room.findById(booking.room).populate("hotel") 
+        const totalPrice= booking.totalPrice;   
+        const {origin}=req.headers;
+    } catch (error) {
+        
     }
 }
